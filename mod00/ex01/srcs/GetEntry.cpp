@@ -1,4 +1,6 @@
 #include "PhoneBook.h"
+#include <cstdlib>
+#include <cstdio>
 
 std::string	GetEntry(const std::string &msg) {
 	std::string Entry;
@@ -11,7 +13,7 @@ std::string	GetEntry(const std::string &msg) {
 			ValidEntry = false;
 			if (Error) {
 				std::cin.clear();
-				std::clearerr(stdin);
+				clearerr(stdin);
 				std::cout << std::endl << "Error please try again" << std::endl;
 			}
 			else {

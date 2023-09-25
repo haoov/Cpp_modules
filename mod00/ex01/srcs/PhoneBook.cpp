@@ -1,4 +1,6 @@
 #include "PhoneBook.hpp"
+#include <iostream>
+#include <cstdlib>
 
 PhoneBook::PhoneBook() {
 	this->NbOfContacts = 0;
@@ -50,7 +52,7 @@ void PhoneBook::Search() {
 			ValidIndex = true;
 		}
 		if (ValidIndex) {
-			Index = std::stoi(Entry);
+			Index = atoi(Entry.c_str());
 			if (Index < 1 || Index > this->NbOfContacts) {
 				ValidIndex = false;
 				std::cout << "Invalid index please try again" << std::endl;
