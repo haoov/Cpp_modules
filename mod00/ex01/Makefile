@@ -7,7 +7,7 @@ OBJDIR		=	$(PROJDIR)/objs
 DEPDIR		=	$(PROJDIR)/deps
 
 #COMPILER
-CC			=	g++
+CC			=	c++
 CCFLAGS		=	-Wall -Wextra -Werror -std=c++98
 INCLUDE		=	-I $(INCDIR)
 

@@ -2,7 +2,7 @@
 TARGET		=	megaphone
 
 #COMPILER
-CC			=	g++
+CC			=	c++
 CCFLAGS		=	-Wall -Wextra -Werror -std=c++98
 
 #FILES

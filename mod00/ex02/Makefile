@@ -3,7 +3,7 @@ TARGET		=	Recovery
 PROJDIR		=	$(realpath $(CURDIR))
 
 #COMPILER
-CC			=	g++
+CC			=	c++
 CCFLAGS		=	-Wall -Wextra -Werror -std=c++98
 INCLUDE		=	-I $(PROJDIR)
 

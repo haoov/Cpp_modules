@@ -52,7 +52,7 @@ void PhoneBook::Search() {
 			ValidIndex = true;
 		}
 		if (ValidIndex) {
-			Index = atoi(Entry.c_str());
+			Index = std::atoi(Entry.c_str());
 			if (Index < 1 || Index > this->NbOfContacts) {
 				ValidIndex = false;
 				std::cout << "Invalid index please try again" << std::endl;

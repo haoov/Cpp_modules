@@ -13,7 +13,7 @@ std::string	GetEntry(const std::string &msg) {
 			ValidEntry = false;
 			if (Error) {
 				std::cin.clear();
-				clearerr(stdin);
+				std::clearerr(stdin);
 				std::cout << std::endl << "Error please try again" << std::endl;
 			}
 			else {
