@@ -17,15 +17,23 @@ class ScalarConverter {
 
 	private :
 		std::string str;
+		char charValue;
+		int intValue;
+		double doubleValue;
+		float floatValue;
+		int error;
 };
 
 typedef enum type {
 	t_string,
 	t_int,
 	t_double,
-	t_float
 }type;
 
-#define ISNUM(c) (c >= '0' && c <= '9')
+#define CHAROVERFLOW	0x01
+#define INTOVERFLOW		0x02
+#define FLOATOVERFLOW	0x04
+
+std::ostream &operator<<(std::ostream &ost, const ScalarConverter &obj);
 
 #endif
