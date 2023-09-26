@@ -18,8 +18,6 @@ class ScalarConverter {
 
 		void convert(const std::string &str);
 		type checkType() const;
-		int getIntValue() const;
-		double getDoubleValue() const;
 		void printChar(std::ostream &) const;
 		void printInt(std::ostream &) const;
 		void printDouble(std::ostream &) const;
@@ -29,7 +27,7 @@ class ScalarConverter {
 	private :
 		std::string str;
 		type type;
-		int intValue;
+		long int intValue;
 		double doubleValue;
 		int litteral;
 		int error;

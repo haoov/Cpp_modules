@@ -2,6 +2,7 @@
 #include <limits>
 #include <cstdlib>
 #include <stdint.h>
+#include <climits>
 
 /*------------------------------------*/
 /*    Constructors and destrcutor     */
@@ -41,23 +42,29 @@ void ScalarConverter::convert(const std::string &str) {
 	this->type = this->checkType();
 	switch (type) {
 		case t_int :
-			this->intValue = std::atoi(this->str.c_str());
-			this->doubleValue = static_cast<double> (this->intValue);
+			this->intValue = std::strtol(this->str.c_str(), NULL, 10);
+			if (this->intValue > INT32_MAX || this->intValue < INT32_MIN) {
+				this->error |= INTOVERFLOW;
+			}
+			if (this->error & INTOVERFLOW) {
+				this->doubleValue = std::atof(this->str.c_str());
+			}
+			else {
+				this->doubleValue = static_cast<double>(this->intValue);
+			}
 			if (this->intValue > INT8_MAX || this->intValue < INT8_MIN) {
 				this->error |= CHAROVERFLOW;
 			}
 			break;
 		case t_double :
 			this->doubleValue = std::atof(this->str.c_str());
-			if (	this->doubleValue > (double) std::numeric_limits<float>::max()
-			||		this->doubleValue < (double) std::numeric_limits<float>::min()) {
-				this->error |= FLOATOVERFLOW;
-			}
-			if (this->doubleValue > (double)INT32_MAX || this->doubleValue < (double)INT32_MIN) {
+			if (	this->doubleValue > static_cast<double>(INT32_MAX)
+			||		this->doubleValue < static_cast<double>(INT32_MIN)) {
 				this->error |= INTOVERFLOW;
 			}
 			this->intValue = static_cast<int> (this->doubleValue);
-			if (this->doubleValue > (double) INT8_MAX || this->doubleValue < (double) INT8_MIN) {
+			if (	this->doubleValue > static_cast<double>(INT8_MAX)
+			||		this->doubleValue < static_cast<double>(INT8_MIN)) {
 				this->error |= CHAROVERFLOW;
 			}
 		case t_string :
@@ -107,14 +114,6 @@ type ScalarConverter::checkType() const {
 	}
 }
 
-int ScalarConverter::getIntValue() const {
-	return (this->intValue);
-}
-
-double ScalarConverter::getDoubleValue() const {
-	return (this->doubleValue);
-}
-
 void ScalarConverter::printDouble(std::ostream &ost) const {
 	ost << "double: ";
 	switch (this->litteral) {
@@ -130,7 +129,8 @@ void ScalarConverter::printDouble(std::ostream &ost) const {
 			}
 			else {
 				ost << this->doubleValue;
-				if (this->doubleValue - static_cast<int> (this->doubleValue) == 0) {
+				if (	this->doubleValue - static_cast<int>(this->doubleValue) == 0
+						&& this->doubleValue < 1e6) {
 					ost << ".0";
 				}
 			}
@@ -156,8 +156,9 @@ void ScalarConverter::printFloat(std::ostream &ost) const {
 				ost << "overflow";
 			}
 			else {
-				ost << static_cast<float> (this->doubleValue);
-				if (this->doubleValue - static_cast<int> (this->doubleValue) == 0) {
+				ost << static_cast<float>(this->doubleValue);
+				if (	this->doubleValue - static_cast<int> (this->doubleValue) == 0
+						&& this->doubleValue < 1e6) {
 					ost << ".0";
 				}
 				ost << "f";
