@@ -7,7 +7,7 @@ int main() {
 	int i;
 	vec.at(3) = 2;
 	try {
-		i = easyfind(vec, 4);
+		i = easyfind(vec, 2);
 	}
 	catch (std::exception &e) {
 		std::cout << "Value not found" << std::endl;

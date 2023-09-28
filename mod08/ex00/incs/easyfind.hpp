@@ -2,17 +2,18 @@
 #define EASYFIND_HPP
 
 #include <iostream>
+#include <algorithm>
+
 
 template <typename T>
 int &easyfind(T cont, int nb) {
-	typename T::iterator i = cont.begin();
-	while (i != cont.end()) {
-		if (*i == nb) {
-			return (*i);
-		}
-		++i;
+	typename T::iterator i = std::find(cont.begin(), cont.end(), nb);
+	if (i == cont.end() && *i != nb) {
+		throw std::exception();
 	}
-	throw std::exception();
+	else {
+		return (*i);
+	}
 }
 
 #endif
