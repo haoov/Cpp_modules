@@ -2,14 +2,15 @@
 #include <iostream>
 
 int main() {
-	Span testSpan(3);
+	int N = 10;
+	Span testSpan(N);
 
-	testSpan.addNumber(1);
-	testSpan.addNumber(2);
-	std::cout << testSpan.at(0) << std::endl;
-	std::cout << testSpan.at(1) << std::endl;
 	testSpan.addNumber(18);
-	std::cout << testSpan.at(2) << std::endl;
 	testSpan.addNumber(42);
+	int array[4] = {4, 5, 6, 7};
+	testSpan.insert(array, array + 4);
+	for (unsigned int i = 0; i < testSpan.size(); ++i) {
+		std::cout << testSpan.at(i) << std::endl;
+	}
 	return (0);
 }

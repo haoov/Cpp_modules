@@ -32,6 +32,18 @@ void Span::addNumber(int val) {
 	this->elems.push_back(val);
 }
 
+int Span::at(int index) const {
+	return (this->elems.at(index));
+}
+
+unsigned int Span::size() const {
+	return (this->elems.size());
+}
+
+void Span::insert(int *first, int *last) {
+	this->elems.insert(this->elems.end(), first, last);
+}
+
 /*------------------------------------*/
 /*         Exception methods          */
 /*------------------------------------*/
@@ -42,8 +54,4 @@ const char *Span::Full::what() const throw() {
 
 const char *Span::outOfRange::what() const throw() {
 	return ("Value is out of range");
-}
-
-void Span::insert(int first, int last) {
-	std::for_each(&first, &last, Span::addNumber);
 }

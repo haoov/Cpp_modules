@@ -2,7 +2,7 @@
 #define SPAN_HPP
 
 #include <iostream>
-#include <list>
+#include <vector>
 #include <algorithm>
 
 class Span {
@@ -14,9 +14,11 @@ class Span {
 		Span &operator=(const Span &);
 
 		void addNumber(int);
-		void insert(int, int);
+		void insert(int*, int*);
+		int at(int) const;
 		unsigned int shortestSpan() const;
 		unsigned int longestSpan() const;
+		unsigned int size() const;
 
 		/*------------------------------------*/
 		/*          Exception class           */
@@ -33,7 +35,7 @@ class Span {
 
 	private :
 		unsigned int maxElems;
-		std::list<int> elems;
+		std::vector<int> elems;
 };
 
 #endif
