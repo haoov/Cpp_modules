@@ -29,7 +29,12 @@ Span &Span::operator=(const Span &other) {
 /*------------------------------------*/
 
 void Span::addNumber(int val) {
-	this->elems.push_back(val);
+	if (this->size() == this->maxElems) {
+		throw Span::Full();
+	}
+	else {
+		this->elems.push_back(val);
+	}
 }
 
 int Span::at(int index) const {
@@ -44,6 +49,20 @@ void Span::insert(int *first, int *last) {
 	this->elems.insert(this->elems.end(), first, last);
 }
 
+unsigned long Span::longestSpan() const {
+	int max = this->at(0);
+	int min = max;
+	for (unsigned int i = 1; i < this->size(); ++i) {
+		if (this->at(i) > max) {
+			max = this->at(i);
+		}
+		if (this->at(i) < min) {
+			min = this->at(i);
+		}
+	}
+	return (static_cast<unsigned long>(std::abs(max - min)));
+}
+
 /*------------------------------------*/
 /*         Exception methods          */
 /*------------------------------------*/
@@ -54,4 +73,8 @@ const char *Span::Full::what() const throw() {
 
 const char *Span::outOfRange::what() const throw() {
 	return ("Value is out of range");
+}
+
+const char *Span::noDistance::what() const throw() {
+	return ("There is no distance to be found");
 }

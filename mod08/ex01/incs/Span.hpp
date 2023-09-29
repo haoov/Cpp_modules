@@ -16,8 +16,8 @@ class Span {
 		void addNumber(int);
 		void insert(int*, int*);
 		int at(int) const;
-		unsigned int shortestSpan() const;
-		unsigned int longestSpan() const;
+		unsigned long shortestSpan() const;
+		unsigned long longestSpan() const;
 		unsigned int size() const;
 
 		/*------------------------------------*/
@@ -28,6 +28,10 @@ class Span {
 				const char *what() const throw();
 		};
 		class outOfRange : public std::exception {
+			public :
+				const char *what() const throw();
+		};
+		class noDistance : public std::exception {
 			public :
 				const char *what() const throw();
 		};
