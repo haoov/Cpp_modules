@@ -13,5 +13,6 @@ int main() {
 		std::cout << testSpan.at(i) << std::endl;
 	}
 	std::cout << "longest span is: " << testSpan.longestSpan() << std::endl;
+	std::cout << "shortest span is: " << testSpan.shortestSpan() << std::endl;
 	return (0);
 }

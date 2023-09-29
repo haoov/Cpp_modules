@@ -12,15 +12,16 @@ Span::Span(const Span &other) {
 	*this = other;
 }
 
-Span::~Span() {
-}
+Span::~Span() {}
 
 /*------------------------------------*/
 /*       Overloading operators        */
 /*------------------------------------*/
 
 Span &Span::operator=(const Span &other) {
-	static_cast<void>(other);
+	for (unsigned int i = 0; i < other.size(); ++i) {
+		this->addNumber(other.at(i));
+	}
 	return (*this);
 }
 
@@ -50,17 +51,23 @@ void Span::insert(int *first, int *last) {
 }
 
 unsigned long Span::longestSpan() const {
-	int max = this->at(0);
-	int min = max;
-	for (unsigned int i = 1; i < this->size(); ++i) {
-		if (this->at(i) > max) {
-			max = this->at(i);
-		}
-		if (this->at(i) < min) {
-			min = this->at(i);
+	std::vector<int>::const_iterator max = std::max_element(this->elems.begin(), this->elems.end());
+	std::vector<int>::const_iterator min = std::min_element(this->elems.begin(), this->elems.end());
+	return (static_cast<unsigned long>(std::abs(*max - *min)));
+}
+
+unsigned long Span::shortestSpan() const {
+	std::vector<int> v;
+	v.insert(v.begin(), this->elems.begin(), this->elems.end());
+	std::sort(v.begin(), v.end());
+	unsigned long minRange = __LONG_MAX__;
+	for (size_t i = 0; i < v.size() - 1; ++i) {
+		unsigned long currRange = static_cast<unsigned long>(std::abs(v.at(i + 1) - v.at(i)));
+		if (currRange < minRange) {
+			minRange = currRange;
 		}
 	}
-	return (static_cast<unsigned long>(std::abs(max - min)));
+	return (minRange);
 }
 
 /*------------------------------------*/
