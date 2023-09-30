@@ -57,8 +57,7 @@ unsigned long Span::longestSpan() const {
 }
 
 unsigned long Span::shortestSpan() const {
-	std::vector<int> v;
-	v.insert(v.begin(), this->elems.begin(), this->elems.end());
+	std::vector<int> v = this->elems;
 	std::sort(v.begin(), v.end());
 	unsigned long minRange = __LONG_MAX__;
 	for (size_t i = 0; i < v.size() - 1; ++i) {
