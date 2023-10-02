@@ -1,13 +1,15 @@
-#include <iostream>
+#include "../incs/btc.hpp"
 #include <map>
 
-std::map<std::string, float> readCurrency(const char *file);
+str_float_map readFile(const char *, char);
 
 int main(int argc, char *argv[]) {
 	static_cast<void>(argc);
-	std::map<std::string, float> date_currency = readCurrency(argv[1]);
-	std::map<std::string, float>::iterator it = date_currency.begin();
-	std::map<std::string, float>::iterator end = date_currency.end();
+	static_cast<void>(argv);
+	//str_float_map date_currency = readFile("data.csv", ',');
+	str_float_map date_value = readFile(argv[1], '|');
+	str_float_map::iterator it = date_value.begin();
+	str_float_map::iterator end = date_value.end();
 	while (it != end) {
 		std::cout << it->first << " | " << it->second << std::endl;
 		++it; 
