@@ -14,7 +14,13 @@ Character::Character(const std::string name) {
 	this->name = name;
 }
 
-Character::~Character() {}
+Character::~Character() {
+	for (int i = 0; i < this->inventorySize; ++i) {
+		if (this->inventory[i] != NULL) {
+			delete this->inventory[i];
+		}
+	}
+}
 
 /*****************************************************************************/
 /*                                                                           */
@@ -52,10 +58,13 @@ void Character::equip(AMateria *m) {
 		--(this->freeSlots);
 		std::cout << this->name << " equip " << m->getType() << " in slot " << i << std::endl;
 	}
+	else {
+		std::cout << this->name << " inventory is full" << std::endl;
+	}
 }
 
 void Character::unequip(int idx) {
-	if (this->inventory[idx] != NULL) {
+	if (idx >= 0 && idx < this->inventorySize && this->inventory[idx] != NULL) {
 		this->inventory[idx] = NULL;
 		++(this->freeSlots);
 		std::cout << this->name << " unequip materia in slot " << idx << std::endl;
@@ -64,7 +73,16 @@ void Character::unequip(int idx) {
 
 void Character::use(int idx, ICharacter &target) {
 	std::cout << this->name << " ";
-	if (this->inventory[idx] != NULL) {
+	if (idx >= 0 && idx < this->inventorySize && this->inventory[idx] != NULL) {
 		this->inventory[idx]->use(target);
+	}
+}
+
+AMateria *Character::getMateria(int index) const {
+	if (index >= 0 && index < this->inventorySize) {
+		return (this->inventory[index]);
+	}
+	else {
+		return (NULL);
 	}
 }

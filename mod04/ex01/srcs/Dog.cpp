@@ -50,3 +50,11 @@ void Dog::makeSound() const {
 std::string Dog::getType() const {
 	return (this->type);
 }
+
+std::string Dog::getIdea(int index) const {
+	return (this->brain->getIdea(index));
+}
+
+void Dog::setIdea(int index, std::string idea) {
+	this->brain->setIdea(index, idea);
+}

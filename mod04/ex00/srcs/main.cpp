@@ -12,12 +12,14 @@ int main() {
 	const WrongAnimal *meta2 = new WrongAnimal();
 	const WrongAnimal *cat2 = new WrongCat();
 
+	std::cout << "TYPES" << std::endl;
 	std::cout << meta->getType() << std::endl;
 	std::cout << cat->getType() << std::endl;
 	std::cout << dog->getType() << std::endl;
 	std::cout << meta2->getType() << std::endl;
 	std::cout << cat2->getType() << std::endl;
 
+	std::cout << std::endl << "SOUNDS" << std::endl;
 	meta->makeSound();
 	cat->makeSound();
 	dog->makeSound();
@@ -27,5 +29,6 @@ int main() {
 	delete meta;
 	delete cat;
 	delete dog;
+	delete meta2;
 	delete cat2;
 }

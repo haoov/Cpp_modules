@@ -11,6 +11,11 @@ Dog::Dog() : Animal("Dog") {
 	std::cout << "Dog default constructor called" << std::endl;
 }
 
+Dog::Dog(const Dog &other) : Animal("Dog") {
+	std::cout << "Dog copy constructor called" << std::endl;
+	*this = other;
+}
+
 Dog::~Dog() {
 	std::cout << "Dog destructor called" << std::endl;
 }
@@ -20,6 +25,12 @@ Dog::~Dog() {
 /*                          OVERLOADING OPERATORS                            */
 /*                                                                           */
 /*****************************************************************************/
+
+Dog &Dog::operator=(const Dog &other) {
+	std::cout << "Dog assignement operator called" << std::endl;
+	this->Animal::operator=(other);
+	return (*this);
+}
 
 /*****************************************************************************/
 /*                                                                           */

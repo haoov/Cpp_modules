@@ -50,3 +50,16 @@ void Dog::makeSound() const {
 std::string Dog::getType() const {
 	return (this->type);
 }
+
+std::string Dog::getIdea(int index) const {
+	if (index >= 0 && index < 100) {
+		return (this->brain->getIdea(index));
+	}
+	else {
+		return (NULL);
+	}
+}
+
+void Dog::setIdea(int index, std::string idea) {
+	this->brain->setIdea(index, idea);
+}

@@ -20,7 +20,7 @@ WrongAnimal::WrongAnimal(const WrongAnimal &other) : type(other.type) {
 }
 
 WrongAnimal::~WrongAnimal() {
-	std::cout << "WringAnimal destructor called" << std::endl;
+	std::cout << "WrongAnimal destructor called" << std::endl;
 }
 
 /*****************************************************************************/

@@ -41,3 +41,18 @@ Brain &Brain::operator=(const Brain &other) {
 /*                             MEMBER FUNCTIONS                              */
 /*                                                                           */
 /*****************************************************************************/
+
+std::string Brain::getIdea(int index) const {
+	if (index >= 0 && index < 100) {
+		return (this->ideas[index]);
+	}
+	else {
+		return (NULL);
+	}
+}
+
+void Brain::setIdea(int index, std::string idea) {
+	if (index >= 0 && index < 100) {
+		this->ideas[index] = idea;
+	}
+}

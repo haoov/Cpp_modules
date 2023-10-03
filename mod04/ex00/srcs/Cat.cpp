@@ -11,6 +11,11 @@ Cat::Cat() : Animal("Cat") {
 	std::cout << "Cat default constructor called" << std::endl;
 }
 
+Cat::Cat(const Cat &other) : Animal("Cat") {
+	std::cout << "Cat copy constructor called" << std::endl;
+	*this = other;
+}
+
 Cat::~Cat() {
 	std::cout << "Cat destructor called" << std::endl;
 }
@@ -20,6 +25,12 @@ Cat::~Cat() {
 /*                          OVERLOADING OPERATORS                            */
 /*                                                                           */
 /*****************************************************************************/
+
+Cat &Cat::operator=(const Cat &other) {
+	std::cout << "Cat assignement operator called" << std::endl;
+	this->Animal::operator=(other);
+	return (*this);
+}
 
 /*****************************************************************************/
 /*                                                                           */

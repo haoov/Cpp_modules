@@ -23,7 +23,7 @@ Parser &Parser::operator=(const Parser &other) {}
 /*              Methods               */
 /*------------------------------------*/
 
-str_float Parser::parseLine(bool curr) {
+str_float Parser::parseLine(bool check) {
 	std::string line;
 	std::getline(m_ifs, line);
 	line.erase(std::remove_if(line.begin(), line.end(), ::isspace), line.end());
@@ -34,6 +34,9 @@ str_float Parser::parseLine(bool curr) {
 	std::string date = line.substr(0, pos);
 	std::string sValue = line.substr(pos + 1, line.length() - pos);
 	for (size_t i = 0; i < date.length(); ++i) {
+		if (i > 9) {
+			throw Parser::BadInput();
+		}
 		switch (i) {
 			case 0 ... 3 :
 			case 5 ... 6 :
@@ -48,8 +51,6 @@ str_float Parser::parseLine(bool curr) {
 					throw Parser::BadInput();
 				}
 				break;
-			case 10 :
-				throw Parser::BadInput();
 			default :
 				break;
 		}
@@ -69,13 +70,13 @@ str_float Parser::parseLine(bool curr) {
 	if (fValue < 0) {
 		throw Parser::NegativeNumber();
 	}
-	if (!curr && fValue > 1000) {
+	if (check && fValue > 1000) {
 		throw Parser::TooLargeNumber();
 	}
 	return (str_float(date, fValue));
 }
 
-str_float_map Parser::parseData(const char *file) {
+str_float_map Parser::parseFile(const char *file) {
 	if (m_ifs.is_open()) {
 		m_ifs.close();
 	}
@@ -84,8 +85,9 @@ str_float_map Parser::parseData(const char *file) {
 	std::string line;
 	std::getline(m_ifs, line);
 	while (!m_ifs.eof()) {
-		map.insert(parseLine(1));
+		map.insert(parseLine(false));
 	}
+	return (map);
 }
 
 /*------------------------------------*/
@@ -95,6 +97,14 @@ str_float_map Parser::parseData(const char *file) {
 
 const char Parser::getDelim() const {
 	return (m_delim);
+}
+
+/*------------------------------------*/
+/*              Setters               */
+/*------------------------------------*/
+
+void Parser::setDelim(const char delim) {
+	m_delim = delim;
 }
 
 /*------------------------------------*/

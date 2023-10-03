@@ -14,9 +14,23 @@ tmp = src->createMateria("ice");
 me->equip(tmp);
 tmp = src->createMateria("cure");
 me->equip(tmp);
+tmp = src->createMateria("cure");
+me->equip(tmp);
+tmp = src->createMateria("cure");
+me->equip(tmp);
+tmp = src->createMateria("cure");
+me->equip(tmp);
+delete tmp;
+ICharacter *other = new Character("Steve");
+*other = *me;
 ICharacter* bob = new Character("bob");
-me->use(0, *bob);
-me->use(1, *bob);
+other->use(0, *bob);
+other->use(1, *bob);
+AMateria *store = static_cast<Character*>(me)->getMateria(0);
+other->unequip(0);
+if (store != NULL) {
+	delete store;
+}
 delete bob;
 delete me;
 delete src;

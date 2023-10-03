@@ -19,10 +19,12 @@ class Parser {
 
 		Parser &operator=(const Parser &);
 
-		str_float_map parseData(const char *);
+		str_float_map parseFile(const char *);
 		str_float parseLine(bool);
 
 		const char getDelim() const;
+
+		void setDelim(const char);
 
 		class BadInput : public std::exception {
 				const char *what() const throw();

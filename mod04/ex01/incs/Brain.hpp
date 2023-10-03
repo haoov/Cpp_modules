@@ -13,6 +13,9 @@ class Brain {
 
 		Brain &operator=(const Brain &other);
 
+		std::string getIdea(int) const;
+		void setIdea(int, std::string);
+
 	protected :
 
 	private :

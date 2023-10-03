@@ -50,3 +50,16 @@ void Cat::makeSound() const {
 std::string Cat::getType() const {
 	return (this->type);
 }
+
+std::string Cat::getIdea(int index) const {
+	if (index >= 0 && index < 100) {
+		return (this->brain->getIdea(index));
+	}
+	else {
+		return (NULL);
+	}
+}
+
+void Cat::setIdea(int index, std::string idea) {
+	this->brain->setIdea(index, idea);
+}

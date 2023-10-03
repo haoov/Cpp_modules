@@ -16,11 +16,11 @@ class Character : public ICharacter {
 		void equip(AMateria *m);
 		void unequip(int idx);
 		void use(int idx, ICharacter &target);
-
-	protected :
+		AMateria *getMateria(int) const;
 
 	private :
 
+		std::string name;
 		static const int inventorySize = 4;
 		AMateria *inventory[Character::inventorySize];
 		int freeSlots;
