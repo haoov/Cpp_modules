@@ -8,11 +8,16 @@ int main(int argc, char *argv[]) {
 	static_cast<void>(argc);
 	static_cast<void>(argv);
 	Parser parser(',');
-	str_float_map date_currency = parser.parseFile("data.csv");
-	str_float_map::iterator it = date_currency.begin();
-	str_float_map::iterator end = date_currency.end();
-	while (it != end) {
-		std::cout << it->first << " | " << it->second << std::endl;
-		++it; 
+	try {
+		str_float_map date_currency = parser.parseFile("data.csv");
+		str_float_map::iterator it = date_currency.begin();
+		str_float_map::iterator end = date_currency.end();
+		while (it != end) {
+			std::cout << it->first << " | " << it->second << std::endl;
+			++it; 
+		}
+	}
+	catch (std::iostream::failure &e) {
+		std::cout << e.what() << std::endl;
 	}
 }

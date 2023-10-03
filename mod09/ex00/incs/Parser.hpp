@@ -21,8 +21,10 @@ class Parser {
 
 		str_float_map parseFile(const char *);
 		str_float parseLine(bool);
+		void checkDate(std::string date) const;
+		bool isValidDate(int, int, int) const;
 
-		const char getDelim() const;
+		char getDelim() const;
 
 		void setDelim(const char);
 
@@ -30,11 +32,12 @@ class Parser {
 				const char *what() const throw();
 		};
 		class NegativeNumber : public std::exception {
-			const char *chat() const throw();
+			const char *what() const throw();
 		};
 		class TooLargeNumber : public std::exception {
 			const char *what() const throw();
 		};
+		class EmptyLine : public std::exception {};
 
 	protected :
 

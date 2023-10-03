@@ -11,6 +11,6 @@ typedef std::map<std::string, float> str_float_map;
 typedef enum errnum {
 	badInput = -1,
 	wrongDate = -2
-};
+} errnum;
 
 #endif
