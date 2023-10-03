@@ -14,6 +14,10 @@ Character::Character(const std::string name) {
 	this->name = name;
 }
 
+Character::Character(const Character &other) {
+	*this = other;
+}
+
 Character::~Character() {
 	for (int i = 0; i < this->inventorySize; ++i) {
 		if (this->inventory[i] != NULL) {
@@ -29,12 +33,17 @@ Character::~Character() {
 /*****************************************************************************/
 
 Character &Character::operator=(const Character &other) {
+	std::cout << "Character assignment operator called" << std::endl;
 	for (int i = 0; i < Character::inventorySize; ++i) {
-		delete this->inventory[i];
-		this->inventory[i] = other.inventory[i];
+		if (this->inventory[i] != NULL) {
+			delete this->inventory[i];
+		}
+		if (other.getMateria(i) != NULL) {
+			this->inventory[i] = other.getMateria(i)->clone();
+		}
 	}
 	this->freeSlots = other.freeSlots;
-	this->name = other.name;
+	this->name = other.getName();
 	return (*this);
 }
 
