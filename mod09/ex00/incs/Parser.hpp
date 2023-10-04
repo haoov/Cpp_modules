@@ -38,6 +38,9 @@ class Parser {
 			const char *what() const throw();
 		};
 		class EmptyLine : public std::exception {};
+		class NotADate : public std::exceptions {
+
+		};
 
 	protected :
 

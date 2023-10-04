@@ -35,6 +35,8 @@ Parser &Parser::operator=(const Parser &other) {
  * 
  * @param check boolean for advanced checking
  * @return a pair<string, float> constructed from the extracted data
+ * @exception throws a EmptyLine exception if the line is empty
+ * @exception throws a BadInput exception if the format is incorrect
 */
 str_float Parser::parseLine(bool check) {
 	std::string line;
