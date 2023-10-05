@@ -9,15 +9,17 @@
 typedef std::pair<std::string, float>	str_float;
 typedef std::map<std::string, float>	str_float_map;
 
-class Parser {
+void analyseInput(const char *inputFile, str_float_map date_currency);
+
+class BitcoinExchange {
 
 	public :
 
-		Parser(const char);
-		Parser(const Parser &);
-		~Parser();
+		BitcoinExchange(const char);
+		BitcoinExchange(const BitcoinExchange &);
+		~BitcoinExchange();
 
-		Parser &operator=(const Parser &);
+		BitcoinExchange &operator=(const BitcoinExchange &);
 
 		str_float_map parseFile(const char *);
 		str_float parseLine(bool);
@@ -35,24 +37,24 @@ class Parser {
 		/*------------------------------------*/
 
 		class Error : public std::exception {};
-		class BadInput : public Parser::Error {
+		class BadInput : public BitcoinExchange::Error {
 			public :
 				const char *what() const throw();
 		};
-		class NegativeNumber : public Parser::Error {
+		class NegativeNumber : public BitcoinExchange::Error {
 			public :
 				const char *what() const throw();
 		};
-		class TooLargeNumber : public Parser::Error {
+		class TooLargeNumber : public BitcoinExchange::Error {
 			public :
 				const char *what() const throw();
 		};
-		class EmptyLine : public Parser::Error {};
-		class InvalidDate : public Parser::Error {
+		class EmptyLine : public BitcoinExchange::Error {};
+		class InvalidDate : public BitcoinExchange::Error {
 			public :
 				const char *what() const throw();
 		};
-		class EofReached : public Parser::Error {
+		class EofReached : public BitcoinExchange::Error {
 			public :
 				const char *what() const throw();
 		};

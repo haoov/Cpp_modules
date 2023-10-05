@@ -1,25 +1,25 @@
-#include "Parser.hpp"
+#include "BitcoinExchange.hpp"
 
 /*------------------------------------*/
 /*    Constructors and destructor     */
 /*------------------------------------*/
 
-Parser::Parser(const char delim) {
+BitcoinExchange::BitcoinExchange(const char delim) {
 	m_ifs.exceptions(m_ifs.failbit | m_ifs.badbit | m_ifs.eofbit);
 	m_delim = delim;
 }
 
-Parser::Parser(const Parser &other) {
+BitcoinExchange::BitcoinExchange(const BitcoinExchange &other) {
 	*this = other;
 }
 
-Parser::~Parser() {}
+BitcoinExchange::~BitcoinExchange() {}
 
 /*------------------------------------*/
 /*             Operators              */
 /*------------------------------------*/
 
-Parser &Parser::operator=(const Parser &other) {
+BitcoinExchange &BitcoinExchange::operator=(const BitcoinExchange &other) {
 	m_delim = other.getDelim();
 	m_ifs.exceptions(m_ifs.failbit | m_ifs.badbit | m_ifs.eofbit);
 	return (*this);
@@ -30,7 +30,7 @@ Parser &Parser::operator=(const Parser &other) {
 /*------------------------------------*/
 
 /**
- * @brief Function to parse a line from the current file opened by the parser 
+ * @brief Function to parse a line from the current file opened 
  * the format must be "date delim value"
  * 
  * @param check boolean for advanced checking
@@ -43,7 +43,7 @@ Parser &Parser::operator=(const Parser &other) {
  * @exception throws a TooLargeNumber if the value is greater than 1000 
  * and the check flag is set
 */
-str_float Parser::parseLine(bool check) {
+str_float BitcoinExchange::parseLine(bool check) {
 	std::string line;
 
 	//Handling the eof case apart from other io_base exceptions
@@ -52,13 +52,13 @@ str_float Parser::parseLine(bool check) {
 	}
 	catch (std::ios_base::failure &e) {
 		if (m_ifs.eof())
-			throw Parser::EofReached();
+			throw BitcoinExchange::EofReached();
 		else
 			throw e;
 	}
 
 	if (line.empty())
-		throw Parser::EmptyLine();
+		throw BitcoinExchange::EmptyLine();
 
 	//this removes all the whitespaces fron the line
 	line.erase(std::remove_if(line.begin(), line.end(), ::isspace), line.end());
@@ -67,7 +67,7 @@ str_float Parser::parseLine(bool check) {
 
 	//if there is no delimiter the input is incorrect
 	if (pos == std::string::npos)
-		throw Parser::BadInput();
+		throw BitcoinExchange::BadInput();
 
 	//then we extract the date part and the value part to do further checks
 	std::string date = line.substr(0, pos);
@@ -78,9 +78,9 @@ str_float Parser::parseLine(bool check) {
 	//extracting the value to a float and further check if necessary
 	float fValue = std::atof(sValue.c_str());
 	if (fValue < 0)
-		throw Parser::NegativeNumber();
+		throw BitcoinExchange::NegativeNumber();
 	if (check && fValue > 1000)
-		throw Parser::TooLargeNumber();
+		throw BitcoinExchange::TooLargeNumber();
 
 	return (str_float(date, fValue));
 }
@@ -92,7 +92,7 @@ str_float Parser::parseLine(bool check) {
  * @param file the file to parse
  * @return a map<string, float> containing the parsed data
 */
-str_float_map Parser::parseFile(const char *file) {
+str_float_map BitcoinExchange::parseFile(const char *file) {
 	if (m_ifs.is_open()) {
 		m_ifs.close();
 		m_ifs.clear();
@@ -110,10 +110,10 @@ str_float_map Parser::parseFile(const char *file) {
 			data = parseLine(false);
 			map.insert(data);
 		}
-		catch (Parser::EmptyLine &empty) {
+		catch (BitcoinExchange::EmptyLine &empty) {
 			//discard the line
 		}
-		catch (Parser::EofReached &e) {
+		catch (BitcoinExchange::EofReached &e) {
 			//do nothing
 		}
 	}
@@ -124,7 +124,7 @@ str_float_map Parser::parseFile(const char *file) {
 /**
  * @brief Function to open a file and discard the first line
 */
-void Parser::openFile(const char *file) {
+void BitcoinExchange::openFile(const char *file) {
 	if (m_ifs.is_open()) {
 		m_ifs.close();
 		m_ifs.clear();
@@ -134,7 +134,7 @@ void Parser::openFile(const char *file) {
 	std::getline(m_ifs, line);
 }
 
-bool Parser::eof() const {
+bool BitcoinExchange::eof() const {
 	return (m_ifs.eof());
 }
 
@@ -146,18 +146,18 @@ bool Parser::eof() const {
  * @brief Function to check the format and the validity of a given date. 
  * The format must be "YYYY-MM-DD"
 */
-void Parser::checkDate(std::string date) const {
+void BitcoinExchange::checkDate(std::string date) const {
 
 	if (date.length() > 10) {
-		throw Parser::BadInput();
+		throw BitcoinExchange::BadInput();
 	}
 	for (size_t i = 0; i < 10; ++i) {
 		if (!std::isdigit(date[i])) {
 			if (i != 4 && i != 7) {
-				throw Parser::BadInput();
+				throw BitcoinExchange::BadInput();
 			}
 			else if (date[i] != '-') {
-				throw Parser::BadInput();
+				throw BitcoinExchange::BadInput();
 			}
 		}
 	}
@@ -168,18 +168,18 @@ void Parser::checkDate(std::string date) const {
 	int month = std::atoi(smonth.c_str());
 	int day = std::atoi(sday.c_str());
 	if (!isValidDate(year, month, day)) {
-		throw Parser::InvalidDate();
+		throw BitcoinExchange::InvalidDate();
 	}
 }
 
 /**
  * @brief Function to check wether a date exist in the range 1800-2100
 */
-bool Parser::isValidDate(int year, int month, int day) const {
+bool BitcoinExchange::isValidDate(int year, int month, int day) const {
 	bool leapYear = false;
-	if (year % 4) {
-		if (year % 100) {
-			if (year % 400)
+	if (year % 4 == 0) {
+		if (year % 100 == 0) {
+			if (year % 400 == 0)
 				leapYear = true;
 			else
 				leapYear = false;
@@ -231,7 +231,7 @@ bool Parser::isValidDate(int year, int month, int day) const {
  * 
  * @exception throws a BadInput exception if it's not
 */
-void Parser::checkValue(std::string &sValue) const {
+void BitcoinExchange::checkValue(std::string &sValue) const {
 	size_t i = 0;
 	if (sValue[i] == '-' || sValue[i] == '+')
 		++i;
@@ -241,7 +241,7 @@ void Parser::checkValue(std::string &sValue) const {
 			if (sValue[id] == '.' && !point)
 				point = true;
 			else
-				throw Parser::BadInput();
+				throw BitcoinExchange::BadInput();
 		}
 	}
 }
@@ -250,7 +250,7 @@ void Parser::checkValue(std::string &sValue) const {
 /*              Getters               */
 /*------------------------------------*/
 
-char Parser::getDelim() const {
+char BitcoinExchange::getDelim() const {
 	return (m_delim);
 }
 
@@ -258,7 +258,7 @@ char Parser::getDelim() const {
 /*              Setters               */
 /*------------------------------------*/
 
-void Parser::setDelim(const char delim) {
+void BitcoinExchange::setDelim(const char delim) {
 	m_delim = delim;
 }
 
@@ -266,22 +266,22 @@ void Parser::setDelim(const char delim) {
 /*             Exceptions             */
 /*------------------------------------*/
 
-const char *Parser::BadInput::what() const throw() {
+const char *BitcoinExchange::BadInput::what() const throw() {
 	return ("bad input");
 }
 
-const char *Parser::NegativeNumber::what() const throw() {
+const char *BitcoinExchange::NegativeNumber::what() const throw() {
 	return ("negative number");
 }
 
-const char *Parser::TooLargeNumber::what() const throw() {
+const char *BitcoinExchange::TooLargeNumber::what() const throw() {
 	return ("too large a number");
 }
 
-const char *Parser::InvalidDate::what() const throw() {
+const char *BitcoinExchange::InvalidDate::what() const throw() {
 	return ("invalid date");
 }
 
-const char *Parser::EofReached::what() const throw() {
+const char *BitcoinExchange::EofReached::what() const throw() {
 	return ("end of file reached");
 }
