@@ -2,22 +2,22 @@
 #include <map>
 #include "../incs/Parser.hpp"
 
-str_float_map readFile(const char *, char);
-
 int main(int argc, char *argv[]) {
-	static_cast<void>(argc);
-	static_cast<void>(argv);
-	Parser parser(',');
-	try {
-		str_float_map date_currency = parser.parseFile("data.csv");
-		str_float_map::iterator it = date_currency.begin();
-		str_float_map::iterator end = date_currency.end();
-		while (it != end) {
-			std::cout << it->first << " | " << it->second << std::endl;
-			++it; 
-		}
+	if (argc < 2) {
+		return -1;
 	}
-	catch (std::iostream::failure &e) {
+	Parser parser(',');
+	str_float_map date_currency;
+	str_float date_value;
+	try {
+		date_currency = parser.parseFile("data.csv");
+		str_float_map::iterator it = date_currency.begin();
+		//str_float_map::iterator end = date_currency.end();
+		++it;
+		std::cout << it->first << std::endl;
+		(void)argv;
+	}
+	catch (std::exception &e) {
 		std::cout << e.what() << std::endl;
 	}
 }

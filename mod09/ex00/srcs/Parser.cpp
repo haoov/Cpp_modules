@@ -5,7 +5,7 @@
 /*------------------------------------*/
 
 Parser::Parser(const char delim) {
-	m_ifs.exceptions(std::iostream::failbit | std::iostream::badbit);
+	m_ifs.exceptions(std::iostream::failbit | std::iostream::badbit | std::iostream::eofbit);
 	m_delim = delim;
 }
 
@@ -26,7 +26,7 @@ Parser &Parser::operator=(const Parser &other) {
 }
 
 /*------------------------------------*/
-/*              Methods               */
+/*           Public methods           */
 /*------------------------------------*/
 
 /**
@@ -37,10 +37,22 @@ Parser &Parser::operator=(const Parser &other) {
  * @return a pair<string, float> constructed from the extracted data
  * @exception throws a EmptyLine exception if the line is empty
  * @exception throws a BadInput exception if the format is incorrect
+ * @exception throws a InvalidDate if the date does not exist
+ * @exception throws a NegativeNumber exception if the value is less than 0
+ * @exception throws a TooLargeNumber if the value is greater than 1000 
+ * and the check flag is on
 */
 str_float Parser::parseLine(bool check) {
 	std::string line;
-	std::getline(m_ifs, line);
+	try {
+		std::getline(m_ifs, line);
+	}
+	catch (std::ios_base::failure &e) {
+		if (!m_ifs.eof())
+			throw e;
+		else
+			return (str_float("", 0.0));
+	}
 
 	if (line.empty())
 		throw Parser::EmptyLine();
@@ -58,17 +70,7 @@ str_float Parser::parseLine(bool check) {
 	std::string date = line.substr(0, pos);
 	std::string sValue = line.substr(pos + 1, line.length() - pos);
 	checkDate(date);
-	
-	//check the value's format (must be an int or a float)
-	for (size_t i = 0; i < sValue.length(); ++i) {
-		bool point = false;
-		if (!std::isdigit(sValue[i])) {
-			if (sValue[i] == '.' && !point)
-				point = true;
-			else
-				throw Parser::BadInput();
-		}
-	}
+	checkValue(sValue);
 
 	//extracting the value to a float and further check if necessary
 	float fValue = std::atof(sValue.c_str());
@@ -81,8 +83,10 @@ str_float Parser::parseLine(bool check) {
 }
 
 str_float_map Parser::parseFile(const char *file) {
-	if (m_ifs.is_open())
+	if (m_ifs.is_open()) {
 		m_ifs.close();
+		m_ifs.clear();
+	}
 	m_ifs.open(file);
 	str_float_map map;
 	std::string line;
@@ -94,15 +98,28 @@ str_float_map Parser::parseFile(const char *file) {
 		catch (Parser::EmptyLine &empty) {
 			//discard the line
 		}
-		catch (std::ios_base::failure &fail) {
-			if (!m_ifs.eof()) {
-				throw fail;
-			}
-		}
 	}
 	m_ifs.clear();
 	return (map);
 }
+
+void Parser::openFile(const char *file) {
+	if (m_ifs.is_open()) {
+		m_ifs.close();
+		m_ifs.clear();
+	}
+	m_ifs.open(file);
+	std::string line;
+	std::getline(m_ifs, line);
+}
+
+bool Parser::eof() const {
+	return (m_ifs.eof());
+}
+
+/*------------------------------------*/
+/*          Private methods           */
+/*------------------------------------*/
 
 void Parser::checkDate(std::string date) const {
 
@@ -126,7 +143,7 @@ void Parser::checkDate(std::string date) const {
 	int month = std::atoi(smonth.c_str());
 	int day = std::atoi(sday.c_str());
 	if (!isValidDate(year, month, day)) {
-		throw Parser::BadInput();
+		throw Parser::InvalidDate();
 	}
 }
 
@@ -179,6 +196,18 @@ bool Parser::isValidDate(int year, int month, int day) const {
 	return (true);
 }
 
+void Parser::checkValue(std::string &sValue) const {
+	for (size_t i = 0; i < sValue.length(); ++i) {
+		bool point = false;
+		if (!std::isdigit(sValue[i])) {
+			if (sValue[i] == '.' && !point)
+				point = true;
+			else
+				throw Parser::BadInput();
+		}
+	}
+}
+
 /*------------------------------------*/
 /*              Getters               */
 /*------------------------------------*/
@@ -210,4 +239,8 @@ const char *Parser::NegativeNumber::what() const throw() {
 
 const char *Parser::TooLargeNumber::what() const throw() {
 	return ("too large a number");
+}
+
+const char *Parser::InvalidDate::what() const throw() {
+	return ("invalid date");
 }

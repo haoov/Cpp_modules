@@ -21,33 +21,46 @@ class Parser {
 
 		str_float_map parseFile(const char *);
 		str_float parseLine(bool);
-		void checkDate(std::string date) const;
-		bool isValidDate(int, int, int) const;
+		void openFile(const char *);
+		bool eof() const;
 
 		char getDelim() const;
 
 		void setDelim(const char);
 
-		class BadInput : public std::exception {
+	public :
+
+		/*------------------------------------*/
+		/*            Exceptions              */
+		/*------------------------------------*/
+
+		class Error : public std::exception {};
+		class BadInput : public Parser::Error {
+			public :
 				const char *what() const throw();
 		};
-		class NegativeNumber : public std::exception {
-			const char *what() const throw();
+		class NegativeNumber : public Parser::Error {
+			public :
+				const char *what() const throw();
 		};
-		class TooLargeNumber : public std::exception {
-			const char *what() const throw();
+		class TooLargeNumber : public Parser::Error {
+			public :
+				const char *what() const throw();
 		};
-		class EmptyLine : public std::exception {};
-		class NotADate : public std::exceptions {
-
+		class EmptyLine : public Parser::Error {};
+		class InvalidDate : public Parser::Error {
+			public :
+				const char *what() const throw();
 		};
-
-	protected :
 
 	private :
 
 		std::ifstream	m_ifs;
 		char			m_delim;
+
+		void checkValue(std::string &) const;
+		void checkDate(std::string date) const;
+		bool isValidDate(int, int, int) const;
 };
 
 #endif
