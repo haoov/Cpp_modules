@@ -52,6 +52,10 @@ class Parser {
 			public :
 				const char *what() const throw();
 		};
+		class EofReached : public Parser::Error {
+			public :
+				const char *what() const throw();
+		};
 
 	private :
 

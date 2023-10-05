@@ -13,4 +13,6 @@ typedef enum errnum {
 	wrongDate = -2
 } errnum;
 
+void analyseInput(const char *inputFile, str_float_map date_currency);
+
 #endif
