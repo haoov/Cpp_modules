@@ -4,7 +4,9 @@
 /*    Constructors and destructor     */
 /*------------------------------------*/
 
-RPN::RPN() {}
+RPN::RPN(std::string &arg) {
+	parseArg(arg);
+}
 
 RPN::RPN(const RPN &other) {}
 
@@ -15,6 +17,7 @@ RPN::~RPN() {}
 /*------------------------------------*/
 
 RPN &RPN::operator=(const RPN &other) {
+	m_val = other.m_val;
 	return (*this);
 }
 
@@ -22,3 +25,9 @@ RPN &RPN::operator=(const RPN &other) {
 /*              Methods               */
 /*------------------------------------*/
 
+void RPN::parseArg(std::string &arg) {
+	size_t len = arg.length();
+	for (size_t i = 0; i < len; ++i) {
+		
+	}
+}

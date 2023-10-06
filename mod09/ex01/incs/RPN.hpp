@@ -2,14 +2,16 @@
 #define RPN_HPP
 
 #include <stack>
+#include <iostream>
 
 class RPN {
 	public :
-		RPN();
+		RPN(std::string &);
 		RPN(const RPN &);
 		~RPN();
 
 		RPN &operator=(const RPN &);
+		void parseArg(std::string &);
 
 	protected :
 
