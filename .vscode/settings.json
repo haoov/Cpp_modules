@@ -1,6 +1,7 @@
 {
 	"C_Cpp.default.compilerPath": "/usr/bin/clang",
 	"files.associations": {
+		"server_log": "shellscript",
 		"stack": "cpp",
 		"array": "cpp",
 		"atomic": "cpp",
@@ -55,6 +56,7 @@
 		"map": "cpp",
 		"optional": "cpp",
 		"ranges": "cpp",
-		"span": "cpp"
+		"span": "cpp",
+		"climits": "cpp"
 	}
 }
