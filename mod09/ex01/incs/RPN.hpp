@@ -21,6 +21,7 @@ class RPN {
 
 		RPN &operator=(const RPN &);
 		void parseArg();
+		void compute();
 		std::vector<s_arg> getArgs() const;
 
 	public :

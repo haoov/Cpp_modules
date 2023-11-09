@@ -30,6 +30,7 @@ RPN &RPN::operator=(const RPN &other) {
 void RPN::parseArg() {
 	std::string str;
 	std::stringstream ss(_str);
+	int index = 0;
 	while (std::getline(ss, str, ' ')) {
 		s_arg sarg;
 		sarg.op = false;
@@ -52,11 +53,24 @@ void RPN::parseArg() {
 		else
 			sarg.val = str[0];
 		_args.push_back(sarg);
+		if ((index == 1 || (index % 2)) && sarg.op)
+			throw parserError("Invalid argument");
+		else if (!(index % 2) && !sarg.op)
+			throw parserError("Invalid argument");
+		++index;
 	}
+	if (_args.size() < 3)
+		throw parserError("Not enough arguments");
 }
 
 std::vector<RPN::s_arg> RPN::getArgs() const {
 	return _args;
+}
+
+void RPN::compute() {
+	int n1, n2, op;
+	n1 = _args.front().val;
+	_args.
 }
 
 /*------------------------------------*/
