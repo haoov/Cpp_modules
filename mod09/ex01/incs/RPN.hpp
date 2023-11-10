@@ -1,7 +1,7 @@
 #ifndef RPN_HPP
 #define RPN_HPP
 
-#include <vector>
+#include <list>
 #include <iostream>
 #include <string>
 #include <cstdlib>
@@ -21,14 +21,15 @@ class RPN {
 
 		RPN &operator=(const RPN &);
 		void parseArg();
-		void compute();
-		std::vector<s_arg> getArgs() const;
+		int compute();
+		int doOp(int, int, int);
+		std::list<s_arg> getArgs() const;
 
 	public :
-		class parserError : public std::exception {
+		class Error : public std::exception {
 			public :
-				parserError(std::string);
-				~parserError() _GLIBCXX_TXN_SAFE_DYN _GLIBCXX_NOTHROW;
+				Error(std::string);
+				~Error() _GLIBCXX_TXN_SAFE_DYN _GLIBCXX_NOTHROW;
 				const char *what() const throw();
 			private :
 				std::string _what;
@@ -36,7 +37,7 @@ class RPN {
 
 	private :
 		std::string _str;
-		std::vector<s_arg> _args;
+		std::list<s_arg> _args;
 };
 
 #endif
