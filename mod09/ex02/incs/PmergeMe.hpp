@@ -5,11 +5,16 @@
 #include <sstream>
 #include <vector>
 #include <deque>
+#include <map>
+#include <utility>
 #include <cstdlib>
 #include <algorithm>
 
 //template <typename _C>
 class PmergeMe {
+	public :
+		typedef std::pair<int, int> t_int_pair;
+		typedef std::vector<t_int_pair> t_vec;
 	public :
 		PmergeMe(const char *);
 		PmergeMe(const PmergeMe &);
@@ -25,10 +30,13 @@ class PmergeMe {
 		void insertValue(int);
 		void binarySort(std::vector<int> &);
 		size_t binarySearch(std::vector<int>, int, int, int);
+		static bool highCompare(t_int_pair, t_int_pair);
 		std::vector<int> getMain() const;
+		void printMain();
 
 	private :
 		std::string _str;
+		t_vec _v;
 		std::vector<int> _c;
 		std::vector<int> _main;
 		std::vector<int> _pen;

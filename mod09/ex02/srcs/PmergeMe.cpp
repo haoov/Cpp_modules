@@ -54,13 +54,16 @@ void PmergeMe::sort() {
 			_c[i + 1] = _c[i];
 			_c[i] = tmp;
 		}
-		_pen.push_back(_c[i]);
-		_main.push_back(_c[i + 1]);
-		if (i + 1 == _c.size() && _odd)
-			_last = _c[i];
+		_v.push_back(t_int_pair(_c[i], _c[i + 1]));
 	}
-	//sort the main container
-	std::sort(_main.begin(), _main.end());
+	if (_odd)
+		_last = _c[_c.size() - 1];
+	//sort the pairs by highest values
+	std::sort(_v.begin(), _v.end(), highCompare);
+	for (size_t i = 0; i < _v.size(); ++i) {
+		_pen.push_back(_v[i].first);
+		_main.push_back(_v[i].second);
+	}
 }
 
 //template <typename _C>
@@ -101,6 +104,8 @@ void PmergeMe::binarySort(std::vector<int> &c) {
 
 //template <typename _C>
 size_t PmergeMe::binarySearch(std::vector<int> c, int val, int min, int max) {
+	if (val > c[max - 1])
+		return max;
 	if (max < min) {
 		if (val > c[min])
 			return (min + 1);
@@ -135,9 +140,21 @@ int PmergeMe::jacobsthal(int n) {
 	return (jacobsthal(n - 1) + 2 * jacobsthal(n - 2));
 }
 
+bool PmergeMe::highCompare(t_int_pair p1, t_int_pair p2) {
+	return (p1.second < p2.second);
+}
+
 //template <typename _C>
 std::vector<int> PmergeMe::getMain() const {
 	return _main;
+}
+
+void PmergeMe::printMain() {
+	for (size_t i = 0; i < _main.size(); ++i) {
+		std::cout << _main[i] << " ";
+		if (i == _main.size() - 1)
+			std::cout << std::endl;
+	}
 }
 
 /*------------------------------------*/
