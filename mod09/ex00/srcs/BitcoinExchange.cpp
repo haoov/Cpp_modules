@@ -13,7 +13,9 @@ BitcoinExchange::BitcoinExchange(const BitcoinExchange &other) {
 	*this = other;
 }
 
-BitcoinExchange::~BitcoinExchange() {}
+BitcoinExchange::~BitcoinExchange() {
+	m_ifs.close();
+}
 
 /*------------------------------------*/
 /*             Operators              */
@@ -131,7 +133,14 @@ void BitcoinExchange::openFile(const char *file) {
 	}
 	m_ifs.open(file);
 	std::string line;
-	std::getline(m_ifs, line);
+	try {
+		std::getline(m_ifs, line);
+	}
+	catch (std::exception &e) {
+		if (m_ifs.eof()) {}
+		else
+			throw e;
+	}
 }
 
 bool BitcoinExchange::eof() const {
