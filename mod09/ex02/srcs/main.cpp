@@ -1,22 +1,18 @@
 #include "../incs/PmergeMe.hpp"
+#include "../incs/PmergeMe.tpp"
 
 int main(int argc, char *argv[]) {
 	if (argc < 2)
 		return -1;
-	PmergeMe vecPmerge(argv[1]);
 	try {
-		vecPmerge.parseArg();
-		vecPmerge.sort();
-		vecPmerge.insert();
+		std::cout << "with vectors :" << std::endl;
+		PmergeMe<std::vector> vecPmerge(argv[1]);
+		std::cout << std::endl;
+		std::cout << "with deque :" << std::endl;
+		PmergeMe<std::deque> deqPmergeMe(argv[1]);
 	}
 	catch (std::exception &e) {
 		std::cout << e.what() << std::endl;
 		return -1;
-	}
-	std::vector<int> vec = vecPmerge.getMain();
-	for (size_t i = 0; i < vec.size(); ++i) {
-		std::cout << vec[i] << " ";
-		if (i == vec.size() -1)
-			std::cout << std::endl;
 	}
 }

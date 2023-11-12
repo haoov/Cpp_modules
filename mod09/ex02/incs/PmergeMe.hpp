@@ -10,11 +10,15 @@
 #include <cstdlib>
 #include <algorithm>
 
-//template <typename _C>
+template <template <typename, typename> class C>
 class PmergeMe {
 	public :
-		typedef std::pair<int, int> t_int_pair;
-		typedef std::vector<t_int_pair> t_vec;
+		typedef typename C<int, std::allocator<int> >::iterator it_t;
+		typedef std::pair<int, int> int_pair_t;
+		typedef C<int_pair_t, std::allocator<int_pair_t> > int_pair_cont_t;
+		typedef C<int, std::allocator<int> > int_cont_t;
+		typedef typename int_pair_cont_t::iterator int_pair_cont_it_t;
+
 	public :
 		PmergeMe(const char *);
 		PmergeMe(const PmergeMe &);
@@ -25,21 +29,15 @@ class PmergeMe {
 		void parseArg();
 		void sort();
 		void insert();
-		int jacobsthal(int);
-		std::vector<int> jacobsthalSequence();
-		void insertValue(int);
-		void binarySort(std::vector<int> &);
-		size_t binarySearch(std::vector<int>, int, int, int);
-		static bool highCompare(t_int_pair, t_int_pair);
-		std::vector<int> getMain() const;
-		void printMain();
+		size_t jacobsthal(int);
+		static bool highCompare(int_pair_t, int_pair_t);
+		void printChain(int_cont_t);
 
 	private :
 		std::string _str;
-		t_vec _v;
-		std::vector<int> _c;
-		std::vector<int> _main;
-		std::vector<int> _pen;
+		int_cont_t _c;
+		int_pair_cont_t _pair;
+		int_cont_t _main;
 		bool _odd;
 		int _last;
 
