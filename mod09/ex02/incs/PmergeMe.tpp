@@ -6,14 +6,15 @@
 
 template <template <typename, typename> class C>
 PmergeMe<C>::PmergeMe(const char *str) : _str(str) {
+	if (_str.empty())
+		throw Error("no argument");
 	_odd = false;
 	parseArg();
-	std::cout << "BEFORE" << std::endl;
-	printChain(_c);
+	std::clock_t start = std::clock();
 	sort();
-	insert();
-	std::cout << "AFTER" << std::endl;
-	printChain(_main);
+	if (_c.size() > 1)
+		insert();
+	_time = (std::clock() - start) / static_cast<double>(CLOCKS_PER_SEC);
 }
 
 template <template <typename, typename> class C>
@@ -54,6 +55,9 @@ void PmergeMe<C>::parseArg() {
 
 template <template <typename, typename> class C>
 void PmergeMe<C>::sort() {
+	//handle special case for one number
+	if (_c.size() == 1)
+		return (_main.push_back(*_c.begin()));
 	//check if base chain has an odd number of values
 	_odd = (_c.size() % 2);
 	//loop through the chain and divide it by pair Bn, An with Bn < An
@@ -119,12 +123,17 @@ bool PmergeMe<C>::highCompare(int_pair_t p1, int_pair_t p2) {
 }
 
 template <template <typename, typename> class C>
-void PmergeMe<C>::printChain(int_cont_t c) {
-	for (size_t i = 0; i < c.size(); ++i) {
-		std::cout << c[i] << " ";
-		if (i == c.size() - 1)
+void PmergeMe<C>::printChain() {
+	for (size_t i = 0; i < _main.size(); ++i) {
+		std::cout << _main[i] << " ";
+		if (i == _main.size() - 1)
 			std::cout << std::endl;
 	}
+}
+
+template <template <typename, typename> class C>
+double PmergeMe<C>::getTime() const throw() {
+	return _time;
 }
 
 /*------------------------------------*/

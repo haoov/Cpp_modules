@@ -9,6 +9,11 @@
 #include <utility>
 #include <cstdlib>
 #include <algorithm>
+#include <ctime>
+#include <cstdio>
+
+#define raw 	0
+#define sorted	1
 
 template <template <typename, typename> class C>
 class PmergeMe {
@@ -31,7 +36,8 @@ class PmergeMe {
 		void insert();
 		size_t jacobsthal(int);
 		static bool highCompare(int_pair_t, int_pair_t);
-		void printChain(int_cont_t);
+		void printChain();
+		double getTime() const throw();
 
 	private :
 		std::string _str;
@@ -40,6 +46,7 @@ class PmergeMe {
 		int_cont_t _main;
 		bool _odd;
 		int _last;
+		double _time;
 
 	public :
 		class Error : public std::exception {
