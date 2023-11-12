@@ -9,8 +9,8 @@ int main(int argc, char *argv[]) {
 	RPN rpn(argv[1]);
 	int res = 0;
 	try {
-		rpn.parseArg();
-		res = rpn.compute();
+		rpn.compute();
+		res = rpn.getRes();
 	}
 	catch (std::exception &e) {
 		std::cout << e.what() << std::endl;

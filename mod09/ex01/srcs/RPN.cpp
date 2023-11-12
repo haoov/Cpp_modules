@@ -20,7 +20,6 @@ RPN::~RPN() {}
 
 RPN &RPN::operator=(const RPN &other) {
 	_val = other._val;
-	_op = other._op;
 	return (*this);
 }
 
@@ -28,44 +27,34 @@ RPN &RPN::operator=(const RPN &other) {
 /*              Methods               */
 /*------------------------------------*/
 
-void RPN::parseArg() {
+void RPN::compute() {
 	std::string str;
 	std::stringstream ss(_str);
+	if (_str.empty())
+		throw Error("no arguments");
+	int index = 0;
 	while (std::getline(ss, str, ' ')) {
-		bool op = false;
-		size_t i = 0;
-		switch (str.size()) {
-			case 1 :
-				if (	str[0] == '-' || str[0] == '+'
-						|| str[0] == '*' || str[0] == '/')
-					op = true;
-				break;
-			default :
-				if (str[i] == '-')
-					++i;
-				for (; i < str.size(); ++i) {
-					if (!::isdigit(str[i])) 
-						throw Error("invalid argument: " + str);
-				}
+		if (str.size() == 1 && ISOP(str[0])) {
+			if (_val.size() < 2)
+				throw Error();
+			int n1 = _val.top(); _val.pop();
+			int n2 = _val.top(); _val.pop();
+			_val.push(doOp(n2, n1, str[0]));
 		}
-		if (op)
-			_op.push_back(str[0]);
-		else
-			_val.push_back(::atoi(str.c_str()));
+		else {
+			for (size_t i = 0; i < str.size(); ++i) {
+				if (i == 0 && str[i] == '-')
+					continue;
+				if (!::isdigit(str[i])) 
+					throw Error("invalid argument: " + str);
+			}
+			_val.push(::atoi(str.c_str()));
+		}
+		++index;
 	}
-	if (_val.size() != (_op.size() + 1))
-		throw Error("wrong number of arguments");
-}
-
-int RPN::compute() {
-	int res = _val.front();
-	_val.pop_front();
-	while (_val.size() != 0) {
-		res = doOp(res, _val.front(), _op.front());
-		_val.pop_front();
-		_op.pop_front();
-	}
-	return res;
+	if (index < 3 || (index % 2) == 0)
+		throw Error();
+	_res = _val.top();
 }
 
 int RPN::doOp(int n1, int n2, int op) {
@@ -82,9 +71,15 @@ int RPN::doOp(int n1, int n2, int op) {
 	}
 }
 
+int RPN::getRes() const throw() {
+	return _res;
+}
+
 /*------------------------------------*/
 /*             Exceptions             */
 /*------------------------------------*/
+
+RPN::Error::Error() : _what("Error") {}
 
 RPN::Error::Error(std::string what) : _what("Error: " + what) {}
 

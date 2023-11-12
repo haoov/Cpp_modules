@@ -1,30 +1,29 @@
 #ifndef RPN_HPP
 #define RPN_HPP
 
-#include <list>
+#include <stack>
 #include <iostream>
 #include <string>
 #include <cstdlib>
 #include <sstream>
 
-class RPN {
-	public :
-		typedef std::list<int> int_list_t;
-		typedef int_list_t::iterator int_list_it_t;
+#define ISOP(x) (x == '-' || x == '+' || x == '/' || x == '*')
 
+class RPN {
 	public :
 		RPN(const char *);
 		RPN(const RPN &);
 		~RPN();
 
 		RPN &operator=(const RPN &);
-		void parseArg();
-		int compute();
+		void compute();
 		int doOp(int, int, int);
+		int getRes() const throw();
 
 	public :
 		class Error : public std::exception {
 			public :
+				Error();
 				Error(std::string);
 				~Error() throw();
 				const char *what() const throw();
@@ -34,8 +33,8 @@ class RPN {
 
 	private :
 		std::string _str;
-		std::list<int> _val;
-		std::list<char> _op;
+		std::stack<int> _val;
+		int _res;
 };
 
 #endif
