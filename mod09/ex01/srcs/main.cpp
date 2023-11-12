@@ -16,6 +16,6 @@ int main(int argc, char *argv[]) {
 		std::cout << e.what() << std::endl;
 		return -1;
 	}
-	std::cout << res << std::endl;
+	std::cout << "result = " << res << std::endl;
 	return 0;
 }

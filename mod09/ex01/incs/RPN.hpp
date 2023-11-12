@@ -9,10 +9,8 @@
 
 class RPN {
 	public :
-		typedef struct arg {
-			int val;
-			bool op;
-		}s_arg;
+		typedef std::list<int> int_list_t;
+		typedef int_list_t::iterator int_list_it_t;
 
 	public :
 		RPN(const char *);
@@ -23,13 +21,12 @@ class RPN {
 		void parseArg();
 		int compute();
 		int doOp(int, int, int);
-		std::list<s_arg> getArgs() const;
 
 	public :
 		class Error : public std::exception {
 			public :
 				Error(std::string);
-				~Error() _GLIBCXX_TXN_SAFE_DYN _GLIBCXX_NOTHROW;
+				~Error() throw();
 				const char *what() const throw();
 			private :
 				std::string _what;
@@ -37,7 +34,8 @@ class RPN {
 
 	private :
 		std::string _str;
-		std::list<s_arg> _args;
+		std::list<int> _val;
+		std::list<char> _op;
 };
 
 #endif

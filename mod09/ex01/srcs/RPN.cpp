@@ -19,7 +19,8 @@ RPN::~RPN() {}
 /*------------------------------------*/
 
 RPN &RPN::operator=(const RPN &other) {
-	_args = other._args;
+	_val = other._val;
+	_op = other._op;
 	return (*this);
 }
 
@@ -30,59 +31,41 @@ RPN &RPN::operator=(const RPN &other) {
 void RPN::parseArg() {
 	std::string str;
 	std::stringstream ss(_str);
-	int index = 0;
 	while (std::getline(ss, str, ' ')) {
-		s_arg sarg;
-		sarg.op = false;
+		bool op = false;
 		size_t i = 0;
 		switch (str.size()) {
 			case 1 :
 				if (	str[0] == '-' || str[0] == '+'
 						|| str[0] == '*' || str[0] == '/')
-					sarg.op = true;
+					op = true;
 				break;
 			default :
 				if (str[i] == '-')
 					++i;
 				for (; i < str.size(); ++i) {
 					if (!::isdigit(str[i])) 
-						throw Error("invalid argument");
+						throw Error("invalid argument: " + str);
 				}
 		}
-		if (!sarg.op)
-			sarg.val = ::atoi(str.c_str());
+		if (op)
+			_op.push_back(str[0]);
 		else
-			sarg.val = str[0];
-		_args.push_back(sarg);
-		if ((index == 1 || (index % 2)) && sarg.op)
-			throw Error("invalid argument");
-		else if (index > 1 && !(index % 2) && !sarg.op)
-			throw Error("invalid argument");
-		++index;
+			_val.push_back(::atoi(str.c_str()));
 	}
-	if (_args.size() < 3)
-		throw Error("not enough arguments");
-}
-
-std::list<RPN::s_arg> RPN::getArgs() const {
-	return _args;
+	if (_val.size() != (_op.size() + 1))
+		throw Error("wrong number of arguments");
 }
 
 int RPN::compute() {
-	int n1, n2, op, i = 0;
-	while (_args.size() != 0) {
-		if (i == 0) {
-			n1 = _args.front().val;
-			_args.pop_front();
-		}
-		n2 = _args.front().val;
-		_args.pop_front();
-		op = _args.front().val;
-		_args.pop_front();
-		n1 = doOp(n1, n2, op);
-		++i;
+	int res = _val.front();
+	_val.pop_front();
+	while (_val.size() != 0) {
+		res = doOp(res, _val.front(), _op.front());
+		_val.pop_front();
+		_op.pop_front();
 	}
-	return n1;
+	return res;
 }
 
 int RPN::doOp(int n1, int n2, int op) {
@@ -105,7 +88,7 @@ int RPN::doOp(int n1, int n2, int op) {
 
 RPN::Error::Error(std::string what) : _what("Error: " + what) {}
 
-RPN::Error::~Error() _GLIBCXX_TXN_SAFE_DYN _GLIBCXX_NOTHROW {}
+RPN::Error::~Error() throw() {}
 
 const char *RPN::Error::what() const throw() {
 	return _what.c_str();
