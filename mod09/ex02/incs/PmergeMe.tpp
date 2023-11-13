@@ -61,7 +61,7 @@ void PmergeMe<C>::sort() {
 	//check if base chain has an odd number of values
 	_odd = (_c.size() % 2);
 	//loop through the chain and divide it by pair Bn, An with Bn < An
-	it_t end = (_odd ? std::prev(_c.end()) : _c.end());
+	it_t end = (_odd ? _c.end() - 1 : _c.end());
 	for (it_t it = _c.begin(); it != end; it += 2) {
 		if (*it > *(it + 1))
 			std::iter_swap(it, it + 1);

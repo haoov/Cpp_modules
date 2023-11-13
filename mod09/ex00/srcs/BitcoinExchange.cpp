@@ -14,7 +14,8 @@ BitcoinExchange::BitcoinExchange(const BitcoinExchange &other) {
 }
 
 BitcoinExchange::~BitcoinExchange() {
-	m_ifs.close();
+	if (m_ifs.is_open())
+		m_ifs.close();
 }
 
 /*------------------------------------*/
@@ -62,7 +63,7 @@ str_float BitcoinExchange::parseLine(bool check) {
 	if (line.empty())
 		throw BitcoinExchange::EmptyLine();
 
-	//this removes all the whitespaces fron the line
+	//this removes all the whitespaces from the line
 	line.erase(std::remove_if(line.begin(), line.end(), ::isspace), line.end());
 
 	size_t pos = line.find(m_delim);

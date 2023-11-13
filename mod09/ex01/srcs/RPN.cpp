@@ -33,10 +33,12 @@ void RPN::compute() {
 	if (_str.empty())
 		throw Error("no arguments");
 	int index = 0;
+	bool op = false;
 	while (std::getline(ss, str, ' ')) {
 		if (str.size() == 1 && ISOP(str[0])) {
 			if (_val.size() < 2)
 				throw Error();
+			op = true;
 			int n1 = _val.top(); _val.pop();
 			int n2 = _val.top(); _val.pop();
 			_val.push(doOp(n2, n1, str[0]));
@@ -52,7 +54,7 @@ void RPN::compute() {
 		}
 		++index;
 	}
-	if (index < 3 || (index % 2) == 0)
+	if (index < 3 || (index % 2) == 0 || !op)
 		throw Error();
 	_res = _val.top();
 }
