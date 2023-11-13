@@ -33,12 +33,7 @@ void analyseInput(const char *inputFile, str_float_map date_currency) {
 	while (!btc.eof()) {
 		try {
 			date_value = btc.parseLine(true);
-			str_float_map::iterator it = date_currency.begin();
-			str_float_map::iterator end = date_currency.end();
-			while (it != end && date_value.first.compare(it->first) > 0)
-				++it;
-			if (it == end || date_value.first.compare(it->first) < 0)
-				--it;
+			str_float_map::iterator it = date_currency.lower_bound(date_value.first);
 			std::cout	<< it->first << " => " << date_value.second
 						<< " = " << date_value.second * it->second << std::endl;
 		}
