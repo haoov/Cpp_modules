@@ -12,9 +12,6 @@
 #include <ctime>
 #include <cstdio>
 
-#define raw 	0
-#define sorted	1
-
 template <template <typename, typename> class C>
 class PmergeMe {
 	public :
@@ -34,8 +31,6 @@ class PmergeMe {
 		void parseArg();
 		void sort();
 		void insert();
-		size_t jacobsthal(int);
-		static bool highCompare(int_pair_t, int_pair_t);
 		void printChain();
 		double getTime() const throw();
 
@@ -58,5 +53,15 @@ class PmergeMe {
 				std::string _what;
 		};
 };
+
+template <typename T, template <typename, typename> class C>
+typename C<T, std::allocator<T> >::iterator binarySearch(C<T, std::allocator<T> > &cont, size_t start, size_t end, T key, bool (*comp)(T, T));
+
+template <typename T, template <typename, typename> class C>
+C<T, std::allocator<T> > binarySort(C<T, std::allocator<T> > &cont, bool (*comp)(T, T));
+
+bool highCompare(std::pair<int, int> p1, std::pair<int, int> p2);
+bool compare(int a, int b);
+size_t jacobsthal(int n);
 
 #endif
