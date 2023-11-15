@@ -11,6 +11,7 @@
 #include <algorithm>
 #include <ctime>
 #include <cstdio>
+#include <limits>
 
 template <template <typename, typename> class C>
 class PmergeMe {

@@ -48,7 +48,10 @@ void PmergeMe<C>::parseArg() {
 			if (!::isdigit(str[i]))
 				throw Error("invalid argument: " + str);
 		}
-		int val = ::atoi(str.c_str());
+		long check = ::atol(str.c_str());
+		if (check > std::numeric_limits<int>::max())
+			throw Error("invalid argument: " + str);
+		int val = static_cast<int>(check);
 		_c.push_back(val);
 	}
 }
